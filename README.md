@@ -31,16 +31,16 @@ Upon startup, the account-service is loaded with 3 customer records having custo
 - Then after APIs can be tested
 - Either create the Account with any of the prepopulated Customer IDs 100001,100002, 100003
 - Else  please create the New customer using the API --> 'http://localhost:8089/api/v1/customer/create-customer'
-  with sample payload
-  {
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "abcd@gmail.com",
-    "address": "HIG 143",
-    "phone": 123456789
- }
-  Account details can be retrieved using the API --> example like http://localhost:8089/api/v1/customer/453814212'
- - Money transfer can be done between two account numbers using the API -- > 'http://localhost:8089/api/v1/customer/money-transfer' 
+-  with sample payload
+-  {
+-    "firstName": "John",
+-    "lastName": "Doe",
+-    "email": "abcd@gmail.com",
+-    "address": "HIG 143",
+-    "phone": 123456789
+- }
+-  Account details can be retrieved using the API --> example like http://localhost:8089/api/v1/customer/453814212'
+-  Money transfer can be done between two account numbers using the API -- > 'http://localhost:8089/api/v1/customer/money-transfer' 
   
 ## To Do
 -  Implement input validation on API calls
