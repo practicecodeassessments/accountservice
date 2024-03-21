@@ -20,19 +20,32 @@ Upon startup, the account-service is loaded with 3 customer records having custo
     -   Request method: GET
    
 ## Accessing the UI
--  Open http://localhost:8089/account/create on a browser
--  Enter 100001, 100002 or 100003 in "Customer ID" failed
--  Enter 0 or any number value in "Initial balance" field and click submit
-
+-  Open http://localhost:8089/swagger-ui/index.html on a browser
+-  Create the user for authentication by using the payload
+  {
+  "userName": "User1",
+  "email": "User1@gmail.com",
+  "password": "Abcd#1234"
+ } on the end point - http://localhost:8089/swagger-ui/index.html#/user-controller/register
+- Copy the bearer token returned and authorize using the Lock symbol in swagger page
+- Then after APIs can be tested
+- Either create the Account with any of the prepopulated Customer IDs 100001,100002, 100003
+- Else  please create the New customer using the API --> 'http://localhost:8089/api/v1/customer/create-customer'
+  with sample payload
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "abcd@gmail.com",
+    "address": "HIG 143",
+    "phone": 123456789
+ }
+  Account details can be retrieved using the API --> example like http://localhost:8089/api/v1/customer/453814212'
+ - Money transfer can be done between two account numbers using the API -- > 'http://localhost:8089/api/v1/customer/money-transfer' 
+  
 ## To Do
 -  Implement input validation on API calls
 -  Write unit tests
--  Add authentication to APIs
--  Containerize the services
 -  Use persistance database like mysql
--  Protect APIs using JWT
--  Generate Swagger documentation
--  Implement log appenders to write to logs
 -  externalise the configuration to Config server
 -  Use token-based authentication using vault server
 -  Enchance the services to use Service-Registry and Discovery
