@@ -51,16 +51,9 @@ Upon startup, the account-service is loaded with 3 customer records having custo
 -  logback for logging
 -  spring-doc for swagger UI
 -  Jwt for Proetecting API .Even can not be invoked from Swagger wuthout authorization grants.
-- 
+-  Used RestTemplate for interservice communication. ( Account-Service and Transaction- Service)
 
 ## To Do
 -  Implement input validation on API calls
 -  Write unit tests
--  Use persistance database like mysql
-  
--  externalise the configuration to Config server
--  Use token-based authentication using vault server
--  Enchance the services to use Service-Registry and Discovery
--  Enhance the services to use Circuit breaker -Netflix Hystrix
--  Include Zuul proxy as API GW
--  Distributed tracing with Sleuth and Zipkin
+-  Use persistance database like mysql 
