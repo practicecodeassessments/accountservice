@@ -41,11 +41,23 @@ Upon startup, the account-service is loaded with 3 customer records having custo
 - }
 -  Account details can be retrieved using the API --> example like http://localhost:8089/api/v1/customer/453814212'
 -  Money transfer can be done between two account numbers using the API -- > 'http://localhost:8089/api/v1/customer/money-transfer' 
-  
+## Tech Stack used
+-  Java 17
+-  Open API 3.0.1
+-  Design First Approach ( write Yaml first and generate DTO classes via maven plugin and use them in code)
+-  Apache beanUtils for conversion between DTO to Entity and vice versa
+-  H2 Database for persistence
+-  Actuator for monitoring
+-  logback for logging
+-  spring-doc for swagger UI
+-  Jwt for Proetecting API .Even can not be invoked from Swagger wuthout authorization grants.
+- 
+
 ## To Do
 -  Implement input validation on API calls
 -  Write unit tests
 -  Use persistance database like mysql
+  
 -  externalise the configuration to Config server
 -  Use token-based authentication using vault server
 -  Enchance the services to use Service-Registry and Discovery
