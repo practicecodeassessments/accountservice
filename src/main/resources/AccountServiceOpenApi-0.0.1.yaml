@@ -1,0 +1,295 @@
+openapi: 3.0.1
+info:
+  title: Account Creation Service
+  description: This specification is for car lease api developed for CGI coding assessment
+  version: 0.0.1
+servers:
+  - url: localhost:8089
+paths:
+  /api/v1/auth/register:
+    post:
+      summary: Register a new user to the API platform
+      operationId: register
+      requestBody:
+        description: Register user to the platform . This should be the first call that need to be made.Response is access token 
+                Copy and use it all the APIs. else 403 forbidden error will be thrown
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+        required: true
+      responses:
+        200:
+          description: User Added to the platform. Rest of the APIs can be accessed using this Bearer Token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUserResponse'
+
+  /api/v1/auth/authenticate:
+    post:
+      summary: Authenticate the user
+      operationId: authenticate
+      requestBody:
+        description: Authenticate the user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        200:
+          description: Authenticated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /api/v1/auth/remove:
+    post:
+      summary: Delete the user from the platform
+      operationId: remove
+      requestBody:
+        description: Delete the user from the API platform
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        200:
+          description: User deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+
+  /api/v1/customer/create-account:
+    put:
+      summary: Create a new account for existing customer
+      operationId: createAccount
+      requestBody:
+        description: add an account to the existing customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerModel'
+        required: true
+      responses:
+        200:
+          description: customer added to the platform
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /api/v1/customer/create-customer:
+    post:
+      summary: Create a new  customer
+      operationId: createCustomer
+      requestBody:
+        description: add a Customer to the bank
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCustomerModel'
+        required: true
+      responses:
+        201:
+          description: customer added to the platform
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /api/v1/customer/{accountNumber}:
+    get:
+      summary: read the customer information by Account Number
+      operationId: findCustomerByAccountNumber
+      parameters:
+        - in: path
+          name: accountNumber
+          schema:
+            type: string
+      responses:
+        200:
+          description: Account information for a given account number of the customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountModel'
+        404:
+          description: Account information not found
+
+  /api/v1/customer/:
+    get:
+      summary: read the customer information by Account Number
+      operationId: findAllAccountsByCustomer
+      parameters:
+        - in: query
+          name: customerNumber
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Account information for a given account number of the customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerAccountResponse'
+        404:
+          description: Account information not found
+
+  /api/v1/customer/money-transfer:
+    get:
+      summary: transfer the money between two accounts
+      operationId: moneyTransfer
+      requestBody:
+      description: transfer money between 2 accounts
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MoneyTransferModel'
+      required: true
+      responses:
+        200:
+          description: Money Transfer between two accounts
+        404:
+          description: Failed for a reason
+
+components:
+  schemas:
+    RegisterUserRequest:
+      type: object
+      properties:
+        userName:
+          type: string
+          description: User to be added to the platform
+        email:
+          type: string
+          description: Email Id of the User
+        password:
+          type: string
+          description: Password of the User
+
+    RegisterUserResponse:
+      type: object
+      properties:
+        response:
+          type: string
+          description: Bearer token that will be returned. Same will be used in consuming other APIs
+
+    AuthenticationRequest:
+      type: object
+      properties:
+        userName:
+          type: string
+          description: User to be authenticated
+        password:
+          type: string
+          description: Password used while registering the user to the platform
+
+    AuthenticationResponse:
+      type: object
+      properties:
+        response:
+          type: string
+          description: Authenticated successfully if the user credentials are correct
+
+    CustomerAccountModel:
+      type: object
+      properties:
+        customerId:
+          type: integer
+        initialCredit:
+          type: double
+
+    NewCustomerModel:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        phone:
+          type: number
+
+    AccountModel:
+      type: object
+      properties:
+        customer:
+          $ref:'#/components/schemas/NewCustomerModel'
+        accountNumber:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        availableBalance:
+          type: number
+        balance:
+          type: number
+        AccountType:
+          enum:
+            - 'SAVINGS'
+            - 'CURRENT'
+          default: 'CURRENT'
+        AccountStatus:
+          enum:
+            - 'ACTIVE'
+            - 'DORMANT'
+          default: 'ACTIVE'
+        UpdateStatus:
+          enum:
+            - 'PENDING'
+            - 'SUCCESSFUL'
+            - 'FAILED'
+          default: 'SUCCESSFUL'
+
+    AccountResponseModel:
+      type: object
+      properties:
+        accountNumber:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        availableBalance:
+          type: number
+        balance:
+          type: number
+
+    CustomerAccountResponse:
+        type: object
+        properties:
+          customer:
+            schema:
+            $ref: '#/components/schemas/NewCustomerModel'
+          accountList:
+            schema:
+            type: array,
+            items: {
+              properties: {
+                $ref: '#/components/schemas/AccountResponseModel'
+              }
+            }
+
+    MoneyTransferModel:
+      type: object
+      properties:
+        sourceAccountNumber:
+          required: true
+          type: string
+        destinationAccountNumber:
+          required: true
+          type: string
+        moneyToBeTransferred:
+          required: true
+          type: double
+      required:
+
